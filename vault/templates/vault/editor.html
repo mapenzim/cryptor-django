@@ -1,0 +1,52 @@
+{% extends "vault/base.html" %}
+{% load static %}
+{% block title %}{% if document %}Edit{% else %}New document{% endif %} · Cryptor Web{% endblock %}
+{% block content %}
+<section class="editor-heading">
+  <div>
+    <a class="back-link" href="{% url 'dashboard' %}">← Back to vault</a>
+    <h1>{% if document %}Edit encrypted document{% else %}Create encrypted document{% endif %}</h1>
+  </div>
+  <span class="status-pill success-dot">Vault unlocked</span>
+</section>
+
+<div class="editor-layout">
+  <form method="post" class="panel editor-form" id="document-form">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="field-row">
+      <div>
+        <label for="{{ form.title.id_for_label }}">Title</label>
+        {{ form.title }}
+        {{ form.title.errors }}
+      </div>
+      <div>
+        <label for="{{ form.purpose.id_for_label }}">Purpose</label>
+        {{ form.purpose }}
+        {{ form.purpose.errors }}
+      </div>
+    </div>
+    <label for="{{ form.content.id_for_label }}">Encrypted content</label>
+    {{ form.content }}
+    {{ form.content.errors }}
+    <div class="form-footer">
+      <p class="muted">Content is encrypted before it is written to SQLite.</p>
+      <button class="primary-button" type="submit">{% if document %}Encrypt changes{% else %}Encrypt and save{% endif %}</button>
+    </div>
+  </form>
+
+  <aside class="panel ai-panel">
+    <p class="eyebrow">LOCAL AI COPILOT</p>
+    <h2>Draft securely</h2>
+    <p class="muted">Ollama runs on this machine. Generated text is inserted into the editor and is not saved until you submit the document.</p>
+    <label for="ai-prompt">Instruction</label>
+    <textarea id="ai-prompt" rows="7" placeholder="Draft a secure recovery-key template..."></textarea>
+    <button class="secondary-button full-width" type="button" id="ai-generate">Generate with Ollama</button>
+    <p id="ai-status" class="muted" role="status"></p>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+  <script src="{% static 'vault/app.js' %}"></script>
+{% endblock %}
+

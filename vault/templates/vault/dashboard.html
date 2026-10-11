@@ -1,0 +1,51 @@
+{% extends "vault/base.html" %}
+{% block title %}Vault · Cryptor Web{% endblock %}
+{% block content %}
+<section class="dashboard-header">
+  <div>
+    <p class="eyebrow">ENCRYPTED WORKSPACE</p>
+    <h1>{{ user.username }}’s vault</h1>
+    <p class="muted">{{ documents|length }} encrypted document{{ documents|length|pluralize }}</p>
+  </div>
+  <div class="header-actions">
+    {% if vault_unlocked %}
+      <span class="status-pill success-dot">Vault unlocked</span>
+      <a class="primary-button" href="{% url 'document_create' %}">New document</a>
+    {% else %}
+      <span class="status-pill warning-dot">Vault locked</span>
+      <a class="primary-button" href="{% url 'unlock' %}">Unlock vault</a>
+    {% endif %}
+  </div>
+</section>
+
+{% if documents %}
+  <section class="document-grid" aria-label="Encrypted documents">
+    {% for document in documents %}
+      <article class="document-card">
+        <div>
+          <p class="document-purpose">{{ document.purpose }}</p>
+          <h2>{{ document.title }}</h2>
+          <p class="muted">Updated {{ document.updated_at|date:"M j, Y · H:i" }}</p>
+        </div>
+        <div class="card-actions">
+          <a class="secondary-button" href="{% url 'document_edit' document.id %}">Open</a>
+          <form method="post" action="{% url 'document_delete' document.id %}" onsubmit="return confirm('Permanently delete this encrypted document?');">
+            {% csrf_token %}
+            <button class="danger-button" type="submit">Delete</button>
+          </form>
+        </div>
+      </article>
+    {% endfor %}
+  </section>
+{% else %}
+  <section class="empty-state panel">
+    <div class="empty-icon">✦</div>
+    <h2>Your vault is empty</h2>
+    <p class="muted">Create a note, recovery-key record, or encrypted template.</p>
+    {% if vault_unlocked %}
+      <a class="primary-button" href="{% url 'document_create' %}">Create your first document</a>
+    {% endif %}
+  </section>
+{% endif %}
+{% endblock %}
+

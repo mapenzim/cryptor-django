@@ -1,0 +1,30 @@
+{% extends "vault/base.html" %}
+{% block title %}Create vault · Cryptor Web{% endblock %}
+{% block content %}
+<section class="auth-layout">
+  <div class="auth-copy">
+    <p class="eyebrow">ZERO-PLAINTEXT STORAGE</p>
+    <h1>Create your encrypted vault.</h1>
+    <p>Each document receives a unique encryption key. Your master key is derived from the password you provide and is never stored directly.</p>
+  </div>
+  <div class="panel auth-panel">
+    <h2>Create account</h2>
+    <form method="post" class="stack-form">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <label for="{{ form.username.id_for_label }}">Username</label>
+      {{ form.username }}
+      {{ form.username.errors }}
+      <label for="{{ form.password1.id_for_label }}">Master password</label>
+      {{ form.password1 }}
+      {{ form.password1.errors }}
+      <label for="{{ form.password2.id_for_label }}">Confirm password</label>
+      {{ form.password2 }}
+      {{ form.password2.errors }}
+      <button class="primary-button" type="submit">Create encrypted vault</button>
+    </form>
+    <p class="auth-switch">Already registered? <a href="{% url 'login' %}">Sign in</a></p>
+  </div>
+</section>
+{% endblock %}
+

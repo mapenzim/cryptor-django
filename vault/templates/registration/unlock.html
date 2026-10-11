@@ -1,0 +1,21 @@
+{% extends "vault/base.html" %}
+{% block title %}Unlock vault · Cryptor Web{% endblock %}
+{% block content %}
+<section class="center-card">
+  <div class="panel auth-panel">
+    <p class="eyebrow">SESSION LOCKED</p>
+    <h1>Unlock your vault</h1>
+    <p class="muted">The server restarted or your in-memory vault key expired. Re-enter your password; it will not be stored.</p>
+    <form method="post" class="stack-form">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      {{ form.non_field_errors }}
+      <label for="{{ form.password.id_for_label }}">Vault password</label>
+      {{ form.password }}
+      {{ form.password.errors }}
+      <button class="primary-button" type="submit">Unlock</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
+

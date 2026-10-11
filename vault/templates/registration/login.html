@@ -1,0 +1,28 @@
+{% extends "vault/base.html" %}
+{% block title %}Sign in · Cryptor Web{% endblock %}
+{% block content %}
+<section class="auth-layout">
+  <div class="auth-copy">
+    <p class="eyebrow">LOCAL-FIRST ENCRYPTED NOTEBOOK</p>
+    <h1>Your private workspace, now in the browser.</h1>
+    <p>Encrypted documents stay in the local Django database. Your vault key exists only in server memory while you are signed in.</p>
+  </div>
+  <div class="panel auth-panel">
+    <h2>Sign in</h2>
+    <p class="muted">Unlock your encrypted workspace.</p>
+    <form method="post" class="stack-form">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <label for="{{ form.username.id_for_label }}">Username</label>
+      {{ form.username }}
+      {{ form.username.errors }}
+      <label for="{{ form.password.id_for_label }}">Password</label>
+      {{ form.password }}
+      {{ form.password.errors }}
+      <button class="primary-button" type="submit">Sign in and unlock</button>
+    </form>
+    <p class="auth-switch">New here? <a href="{% url 'signup' %}">Create a vault</a></p>
+  </div>
+</section>
+{% endblock %}
+
